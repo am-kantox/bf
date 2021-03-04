@@ -90,13 +90,13 @@ defmodule Bf do
 
   defp process(<<?+, rest::binary>>, %{pos: pos, levels: levels} = acc) do
     ensure_dyno(pos)
-    Bf.Dyno.synch_call(pos, :+)
+    Bf.Dyno.asynch_call(pos, :+)
     process(rest, %{acc | levels: update_levels(levels, "+")})
   end
 
   defp process(<<?-, rest::binary>>, %{pos: pos, levels: levels} = acc) do
     ensure_dyno(pos)
-    Bf.Dyno.synch_call(pos, :-)
+    Bf.Dyno.asynch_call(pos, :-)
     process(rest, %{acc | levels: update_levels(levels, "-")})
   end
 
@@ -110,7 +110,7 @@ defmodule Bf do
   defp process(<<?,, rest::binary>>, %{pos: pos, levels: levels} = acc) do
     ensure_dyno(pos)
     [value] = "" |> IO.getn() |> to_charlist()
-    Bf.Dyno.synch_call(pos, {:>, value})
+    Bf.Dyno.asynch_call(pos, {:>, value})
     process(rest, %{acc | levels: update_levels(levels, ",")})
   end
 

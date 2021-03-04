@@ -11,7 +11,9 @@ defmodule Bf.Dyno do
 
   @impl Tarearbol.DynamicManager
   def call(:<, _from, {_id, value}), do: {:ok, value}
-  def call(:-, _from, {_id, value}), do: {:replace, value - 1}
-  def call(:+, _from, {_id, value}), do: {:replace, value + 1}
-  def call({:>, value}, _from, {_id, _value}), do: {:replace, value}
+
+  @impl Tarearbol.DynamicManager
+  def cast(:-, {_id, value}), do: {:replace, value - 1}
+  def cast(:+, {_id, value}), do: {:replace, value + 1}
+  def cast({:>, value}, {_id, _value}), do: {:replace, value}
 end
